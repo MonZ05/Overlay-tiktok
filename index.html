@@ -7,6 +7,7 @@ html,body{margin:0;width:100%;height:100%;background:transparent;overflow:hidden
 #top{top:40px}#bot{bottom:40px}
 .titulo{height:130px;margin-bottom:10px;display:flex;align-items:center;justify-content:center}
 .titulo .fl{flex-direction:row}
+.mini .titulo{height:84px;margin-bottom:4px}.mini .titulo img{max-height:84px}.mini .titulo span{font-size:44px}.mini .grid{row-gap:8px}.mini .grid+.titulo{margin-top:14px}
 .titulo img{max-height:130px;max-width:900px;filter:drop-shadow(0 0 14px rgba(212,160,23,.8))}
 .titulo span{font-size:64px;letter-spacing:3px;color:#FFD54A;text-transform:uppercase;text-shadow:0 0 18px #D4A017,0 4px 0 #000,0 0 3px #000;-webkit-text-stroke:2px #000;paint-order:stroke fill}
 .grid{display:flex;flex-wrap:wrap;justify-content:center;width:1040px;row-gap:14px}
@@ -37,13 +38,25 @@ function pre(u){u=U(u);if(!u)return Promise.resolve();if(!PRE.has(u)){const i=ne
 function precarga(){if(!D)return Promise.resolve();const u=[D.titulos.icono,...Object.values(D.titulos)];for(const k in D.sec)for(const x of D.sec[k])u.push(x.img);return Promise.all(u.map(pre))}
 const espera=ms=>new Promise(r=>setTimeout(r,ms));
 function fallo(i,n){const s=document.createElement('span');s.className='sn';s.textContent=n;i.replaceWith(s)}
-function paginas(slots){const out=[];for(const s of slots){const it=(D.sec[s]||[]);for(let i=0;i<it.length;i+=10)out.push({slot:s,items:it.slice(i,i+10)})}return out}
+function trozos(n){const p=Math.ceil(n/10),b=Math.floor(n/p),r=n%p,o=[];let k=0;for(let i=0;i<p;i++){const t=b+(i<r?1:0);o.push([k,k+t]);k+=t}return o} // reparte parejo: 11 -> 6+5, nunca 10+1
+function paginas(slots){
+  const piezas=[];
+  for(const s of slots){const it=(D.sec[s]||[]);if(!it.length)continue;for(const [a,b] of trozos(it.length))piezas.push({slot:s,items:it.slice(a,b)})}
+  const out=[];let esp=null; // piezas chicas (<=5): se juntan de dos en dos para que la página no se vea vacía
+  for(const p of piezas){
+    if(p.items.length<=5){if(esp){out[esp.idx].groups.push(p);esp=null}else{out.push({groups:[p]});esp={idx:out.length-1}}}
+    else out.push({groups:[p]});
+  }
+  return out;
+}
 function precio(p){const c=D.cfg;let ic='';if(c.icono==='emoji'&&c.emoji)ic='<span>'+esc(c.emoji)+'</span>';else if(c.icono==='imagen'&&D.titulos.icono)ic='<img src="'+U(D.titulos.icono)+'">';return '<div class="pr">'+ic+'<span>'+esc(p)+'</span></div>'}
 function pinta(el,pg){
   if(!pg){el.innerHTML='';return}
-  const t=D.titulos[pg.slot];
-  el.innerHTML='<div class="titulo"><div class="fl">'+(t?'<img src="'+U(t)+'">':'<span>'+NOMBRES[pg.slot]+'</span>')+'</div></div><div class="grid">'+
-  pg.items.map((x,i)=>'<div class="it" style="animation-delay:'+(120+i*70)+'ms"><div class="fl" style="animation-delay:-'+((i*0.7)%3.6).toFixed(1)+'s"><div class="im">'+(x.img?'<img src="'+esc(U(x.img))+'" onerror="fallo(this,\''+esc(x.nombre).replace(/'/g,'')+'\')">':'<span class="sn">'+esc(x.nombre)+'</span>')+'</div>'+(D.cfg.nombres?'<div class="nom">'+esc(x.nombre)+'</div>':'')+(x.precio?precio(x.precio):'')+(x.cant>=2?'<div class="x">x'+x.cant+'</div>':'')+'</div></div>').join('')+'</div>';
+  const mini=pg.groups.length>1;el.className='zona'+(mini?' mini':'');
+  let n=0;
+  el.innerHTML=pg.groups.map(g=>{const t=D.titulos[g.slot];
+   return '<div class="titulo"><div class="fl">'+(t?'<img src="'+U(t)+'">':'<span>'+NOMBRES[g.slot]+'</span>')+'</div></div><div class="grid" style="width:'+(g.items.length<=5?g.items.length:Math.ceil(g.items.length/2))*208+'px">'+
+   g.items.map(x=>{const i=n++;return '<div class="it" style="animation-delay:'+(120+i*70)+'ms"><div class="fl" style="animation-delay:-'+((i*0.7)%3.6).toFixed(1)+'s"><div class="im">'+(x.img?'<img src="'+esc(U(x.img))+'" onerror="fallo(this,\''+esc(x.nombre).replace(/'/g,'')+'\')">':'<span class="sn">'+esc(x.nombre)+'</span>')+'</div>'+(D.cfg.nombres?'<div class="nom">'+esc(x.nombre)+'</div>':'')+(x.precio?precio(x.precio):'')+(x.cant>=2?'<div class="x">x'+x.cant+'</div>':'')+'</div></div>'}).join('')+'</div>'}).join('');
 }
 function ajusta(){ // encaja 1080x1920 dentro del recuadro que dé TikTok, centrado y sin recortes
   const root=document.getElementById('root'),e=((D&&D.cfg.escala)||100)/100;
@@ -56,7 +69,7 @@ function ciclo(){
   ajusta();
   const a=document.getElementById('top'),b=document.getElementById('bot');
   const pt=top.length?top[iT%top.length]:null,pb=bot.length?bot[iB%bot.length]:null;iT++;iB++;
-  const lista=()=>{const u=[];for(const g of [pt,pb])if(g){u.push(D.titulos[g.slot]);g.items.forEach(x=>u.push(x.img))}return Promise.race([Promise.all(u.map(pre)),espera(4000)])};
+  const lista=()=>{const u=[];for(const g of [pt,pb])if(g)g.groups.forEach(q=>{u.push(D.titulos[q.slot]);q.items.forEach(x=>u.push(x.img))});return Promise.race([Promise.all(u.map(pre)),espera(4000)])};
   const nuevo=()=>{pinta(a,pt);pinta(b,pb)};
   const viejos=[...document.querySelectorAll('.it,.titulo')];
   if(!viejos.length){lista().then(nuevo);return}
