@@ -1,37 +1,49 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8"><title>MonZ Overlay</title>
 <meta name="viewport" content="width=1080,height=1920">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
 <style>
-html,body{margin:0;width:100%;height:100%;background:transparent;overflow:hidden;font-family:'Inter','Segoe UI',system-ui,sans-serif;font-weight:800}
+html,body{margin:0;width:100%;height:100%;background:transparent;overflow:hidden;font-family:'Montserrat','Segoe UI',system-ui,sans-serif;font-weight:900}
 #root{position:absolute;left:0;top:0;width:1080px;height:1920px;transform-origin:top left}
 .zona{position:absolute;left:0;width:1080px;display:flex;flex-direction:column;align-items:center}
-#top{top:40px}#bot{bottom:40px}
-.titulo{height:130px;margin-bottom:10px;display:flex;align-items:center;justify-content:center}
-.titulo .fl{flex-direction:row}
-.mini .titulo{height:84px;margin-bottom:4px}.mini .titulo img{max-height:84px}.mini .titulo span{font-size:44px}.mini .grid{row-gap:8px}.mini .grid+.titulo{margin-top:14px}
-.titulo img{max-height:130px;max-width:900px;filter:drop-shadow(0 0 14px rgba(212,160,23,.8))}
-.titulo span{font-size:64px;letter-spacing:3px;color:#FFD54A;text-transform:uppercase;text-shadow:0 0 18px #D4A017,0 4px 0 #000,0 0 3px #000;-webkit-text-stroke:2px #000;paint-order:stroke fill}
-.grid{display:flex;flex-wrap:wrap;justify-content:center;width:1040px;row-gap:14px}
+#top{top:24px}#bot{top:1262px}
+/* Títulos: primera palabra naranja, el resto azul (estilo MonZ) */
+.titulo{height:120px;margin-bottom:6px;display:flex;align-items:center;justify-content:center;gap:26px;animation:entraT .7s cubic-bezier(.2,1.3,.4,1) both}
+.titulo>.fl{flex-direction:row;gap:26px}
+.titulo img.tt{max-height:120px;max-width:780px;filter:drop-shadow(0 0 12px rgba(255,150,0,.6)) drop-shadow(0 4px 6px rgba(0,0,0,.8))}
+.tx{font-family:'Anton','Impact','Arial Black',sans-serif;font-weight:400;font-size:92px;line-height:1;letter-spacing:2px;text-transform:uppercase;transform:skewX(-9deg);white-space:nowrap;display:flex;gap:.28em}
+.w{position:relative;display:inline-block;isolation:isolate}
+.w::before{content:attr(data-t);position:absolute;left:0;top:0;z-index:-1;-webkit-text-stroke:16px #0a1226;color:#0a1226;filter:drop-shadow(0 0 10px rgba(255,160,40,.55)) drop-shadow(0 6px 4px rgba(0,0,0,.7))}
+.w i{font-style:normal;-webkit-text-stroke:2px #fff2d0;paint-order:stroke fill;background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.w.o i{background-image:linear-gradient(180deg,#FFE259 0%,#FF9A1A 50%,#F2520A 100%)}
+.w.a i{background-image:linear-gradient(180deg,#8FE3FF 0%,#2EA2FF 50%,#0B5BE0 100%);-webkit-text-stroke-color:#e6f6ff}
+.bd{width:112px;height:75px;flex:none;border-radius:4px;box-shadow:0 5px 10px rgba(0,0,0,.7),0 0 0 2px rgba(255,255,255,.15);transform:skewX(0)}
+.mini .titulo{height:92px;margin-bottom:2px}.mini .tx{font-size:66px}.mini .w::before{-webkit-text-stroke:12px #0a1226}.mini .bd{width:84px;height:56px}.mini .titulo img.tt{max-height:92px}
+.mini .grid{row-gap:6px}.mini .grid+.titulo{margin-top:10px}
+.grid{display:flex;flex-wrap:wrap;justify-content:center;row-gap:12px}
 .it{width:208px;position:relative;animation:entra .65s cubic-bezier(.2,1.4,.4,1) both}
 .it.sale,.titulo.sale{animation:sale .5s ease-in both}
-.titulo{animation:entraT .7s cubic-bezier(.2,1.3,.4,1) both}
 @keyframes entra{from{opacity:0;transform:translateY(60px) scale(.4) rotate(-6deg)}to{opacity:1;transform:none}}
 @keyframes entraT{from{opacity:0;transform:translateY(-50px) scale(.7)}to{opacity:1;transform:none}}
 @keyframes sale{from{opacity:1;transform:none}to{opacity:0;transform:translateY(-50px) scale(.4) rotate(6deg)}}
-@keyframes flota{0%,100%{transform:translateY(0) rotate(-.6deg)}50%{transform:translateY(-8px) rotate(.6deg)}}
+@keyframes flota{0%,100%{transform:translateY(0) rotate(-.6deg)}50%{transform:translateY(-7px) rotate(.6deg)}}
 .fl{display:flex;flex-direction:column;align-items:center;animation:flota 3.6s ease-in-out infinite}
-.titulo .fl{animation-duration:4.4s}
+.titulo>.fl{animation-duration:4.4s}
 .im{width:158px;height:158px;display:flex;align-items:center;justify-content:center}
 .im img{max-width:100%;max-height:100%;object-fit:contain;filter:drop-shadow(0 0 10px rgba(255,200,60,.85)) drop-shadow(0 5px 6px rgba(0,0,0,.8))}
 .sn{font-size:26px;color:#FFD54A;text-align:center;line-height:1.05;padding:0 6px;text-shadow:0 2px 4px #000,0 0 3px #000;-webkit-text-stroke:1px #000;paint-order:stroke fill}
-.nom{font-size:21px;color:#fff;margin-top:2px;max-width:200px;text-align:center;line-height:1.1;text-shadow:0 2px 4px #000,0 0 3px #000;-webkit-text-stroke:1px #000;paint-order:stroke fill}
-.pr{margin-top:4px;display:flex;align-items:center;gap:6px;padding:5px 18px;border-radius:999px;font-size:35px;color:#1a1100;background:linear-gradient(180deg,#FFE27A,#E8A800 55%,#B87900);border:3px solid #fff3b8;box-shadow:0 0 16px rgba(255,190,30,.9),0 5px 8px rgba(0,0,0,.6);white-space:nowrap}
-.pr img{height:34px}
-.x{position:absolute;top:-4px;right:12px;min-width:50px;padding:2px 10px;text-align:center;border-radius:999px;font-size:30px;color:#fff;background:linear-gradient(180deg,#ff5c5c,#c40000);border:3px solid #fff;box-shadow:0 0 14px rgba(255,60,60,.9),0 3px 6px rgba(0,0,0,.7);-webkit-text-stroke:1px #600;paint-order:stroke fill}
+.nom{font-size:21px;color:#fff;margin-top:2px;max-width:196px;text-align:center;line-height:1.1;text-shadow:0 2px 4px #000;-webkit-text-stroke:1px #000;paint-order:stroke fill}
+/* precio: texto blanco con contorno (estilo MonZ) o pastilla dorada */
+.pt{margin-top:2px;display:flex;align-items:baseline;justify-content:center;gap:5px;color:#fff;white-space:nowrap;-webkit-text-stroke:6px #000;paint-order:stroke fill;text-shadow:0 3px 5px rgba(0,0,0,.8)}
+.pt .n{font-size:42px;line-height:1}.pt .m{font-size:24px}.pt .ic{font-size:36px;-webkit-text-stroke:0;align-self:center}.pt img{height:36px;align-self:center}
+.pill .pt{margin-top:4px;padding:5px 18px;border-radius:999px;gap:6px;align-items:center;color:#1a1100;-webkit-text-stroke:0;text-shadow:none;background:linear-gradient(180deg,#FFE27A,#E8A800 55%,#B87900);border:3px solid #fff3b8;box-shadow:0 0 16px rgba(255,190,30,.9),0 5px 8px rgba(0,0,0,.6)}
+.pill .pt .n{font-size:32px;font-weight:800}.pill .pt .m{font-size:32px;font-weight:800}.pill .pt .ic{font-size:30px}.pill .pt img{height:34px}
+.x{position:absolute;top:-4px;right:12px;min-width:50px;padding:2px 10px;text-align:center;border-radius:999px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:30px;line-height:1.25;color:#fff;background:linear-gradient(180deg,#ff5c5c,#c40000);border:3px solid #fff;box-shadow:0 0 14px rgba(255,60,60,.9),0 3px 6px rgba(0,0,0,.7);-webkit-text-stroke:1px #600;paint-order:stroke fill;transform:none;text-shadow:none}
 </style></head><body><div id="root"><div class="zona" id="top"></div><div class="zona" id="bot"></div></div>
 <script>
 const BASE='http://127.0.0.1:3000';const U=u=>(u&&u[0]==='/'?BASE+u:u);
 let D=null,iT=0,iB=0,timer=null;
-const NOMBRES={permanentes:'Frutas Permanentes',skins:'Skins',fisicas:'Frutas Físicas',gamepasses:'Gamepasses',robux:'Robux'};
+const NOMBRES={permanentes:'Frutas Permanentes',skinsfisicas:'Skins y Físicas',gamepasses:'Game Passes',robux:'Robux'};
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const PRE=new Map(); // imágenes siempre en memoria: no se vuelven a descargar ni salen "a pedazos"
 function pre(u){u=U(u);if(!u)return Promise.resolve();if(!PRE.has(u)){const i=new Image();i.src=u;PRE.set(u,{i,p:(i.decode?i.decode():Promise.resolve()).catch(()=>{})})}return PRE.get(u).p}
@@ -49,28 +61,46 @@ function paginas(slots){
   }
   return out;
 }
-function precio(p){const c=D.cfg;let ic='';if(c.icono==='emoji'&&c.emoji)ic='<span>'+esc(c.emoji)+'</span>';else if(c.icono==='imagen'&&D.titulos.icono)ic='<img src="'+U(D.titulos.icono)+'">';return '<div class="pr">'+ic+'<span>'+esc(p)+'</span></div>'}
-function pinta(el,pg){
+const BANDERA='<svg class="bd" viewBox="0 0 90 60"><rect width="30" height="60" fill="#006847"/><rect x="30" width="30" height="60" fill="#fff"/><rect x="60" width="30" height="60" fill="#CE1126"/><circle cx="45" cy="30" r="8" fill="#8b6b2e" opacity=".85"/></svg>';
+function titulo(slot,abajo){
+  const t=D.titulos[slot];
+  if(t)return '<img class="tt" src="'+U(t)+'">';
+  const ws=NOMBRES[slot].split(' '),a=ws.shift();
+  const h='<div class="tx"><span class="w o" data-t="'+esc(a)+'"><i>'+esc(a)+'</i></span>'+(ws.length?'<span class="w a" data-t="'+esc(ws.join(' '))+'"><i>'+esc(ws.join(' '))+'</i></span>':'')+'</div>';
+  return (abajo&&D.cfg.banderas?BANDERA:'')+h+(abajo&&D.cfg.banderas?BANDERA:'');
+}
+function precio(p){
+  const c=D.cfg;let ic='';
+  if(c.icono==='emoji'&&c.emoji)ic='<span class="ic">'+esc(c.emoji)+'</span>';else if(c.icono==='imagen'&&D.titulos.icono)ic='<img src="'+U(D.titulos.icono)+'">';
+  const m=String(p).match(/^([\d.,]+)\s*(.*)$/);
+  return '<div class="pt">'+ic+(m?'<span class="n">'+esc(m[1])+'</span>'+(m[2]?'<span class="m">'+esc(m[2])+'</span>':''):'<span class="n">'+esc(p)+'</span>')+'</div>';
+}
+function pinta(el,pg,abajo){
   if(!pg){el.innerHTML='';return}
-  const mini=pg.groups.length>1;el.className='zona'+(mini?' mini':'');
+  const mini=pg.groups.length>1;el.className='zona'+(mini?' mini':'')+(D.cfg.estilo==='pastilla'?' pill':'');
   let n=0;
-  el.innerHTML=pg.groups.map(g=>{const t=D.titulos[g.slot];
-   return '<div class="titulo"><div class="fl">'+(t?'<img src="'+U(t)+'">':'<span>'+NOMBRES[g.slot]+'</span>')+'</div></div><div class="grid" style="width:'+(g.items.length<=5?g.items.length:Math.ceil(g.items.length/2))*208+'px">'+
+  el.innerHTML=pg.groups.map(g=>{
+   return '<div class="titulo"><div class="fl">'+titulo(g.slot,abajo)+'</div></div><div class="grid" style="width:'+(g.items.length<=5?g.items.length:Math.ceil(g.items.length/2))*208+'px">'+
    g.items.map(x=>{const i=n++;return '<div class="it" style="animation-delay:'+(120+i*70)+'ms"><div class="fl" style="animation-delay:-'+((i*0.7)%3.6).toFixed(1)+'s"><div class="im">'+(x.img?'<img src="'+esc(U(x.img))+'" onerror="fallo(this,\''+esc(x.nombre).replace(/'/g,'')+'\')">':'<span class="sn">'+esc(x.nombre)+'</span>')+'</div>'+(D.cfg.nombres?'<div class="nom">'+esc(x.nombre)+'</div>':'')+(x.precio?precio(x.precio):'')+(x.cant>=2?'<div class="x">x'+x.cant+'</div>':'')+'</div></div>'}).join('')+'</div>'}).join('');
+  encajaTitulos(el);
+}
+function encajaTitulos(el){ // si el texto del título es más ancho que la pantalla, lo achica
+  el.querySelectorAll('.tx').forEach(t=>{const fl=t.parentElement.querySelectorAll('.bd').length*(el.classList.contains('mini')?110:138),av=1030-fl;t.style.fontSize='';const w=t.offsetWidth;if(w>av){t.style.fontSize=(parseFloat(getComputedStyle(t).fontSize)*av/w*0.97)+'px'}});
 }
 function ajusta(){ // encaja 1080x1920 dentro del recuadro que dé TikTok, centrado y sin recortes
   const root=document.getElementById('root'),e=((D&&D.cfg.escala)||100)/100;
   const k=Math.min(innerWidth/1080,innerHeight/1920)*e;
   root.style.transform='translate('+((innerWidth-1080*k)/2)+'px,'+((innerHeight-1920*k)/2)+'px) scale('+k+')';
+  if(D)document.getElementById('bot').style.top=(D.cfg.abajoY||1262)+'px';
 }
 addEventListener('resize',ajusta);
 function ciclo(){
-  const top=paginas(['permanentes']);let bot=paginas(['skins','fisicas','gamepasses','robux']);
+  const top=paginas(['permanentes']);let bot=paginas(['skinsfisicas','gamepasses','robux']);
   ajusta();
   const a=document.getElementById('top'),b=document.getElementById('bot');
   const pt=top.length?top[iT%top.length]:null,pb=bot.length?bot[iB%bot.length]:null;iT++;iB++;
   const lista=()=>{const u=[];for(const g of [pt,pb])if(g)g.groups.forEach(q=>{u.push(D.titulos[q.slot]);q.items.forEach(x=>u.push(x.img))});return Promise.race([Promise.all(u.map(pre)),espera(4000)])};
-  const nuevo=()=>{pinta(a,pt);pinta(b,pb)};
+  const nuevo=()=>{pinta(a,pt,false);pinta(b,pb,true)};
   const viejos=[...document.querySelectorAll('.it,.titulo')];
   if(!viejos.length){lista().then(nuevo);return}
   document.querySelectorAll('.zona').forEach(z=>{z.querySelectorAll('.titulo').forEach(e=>e.classList.add('sale'));z.querySelectorAll('.it').forEach((e,i)=>{e.style.animationDelay=(i*50)+'ms';e.classList.add('sale')})});
