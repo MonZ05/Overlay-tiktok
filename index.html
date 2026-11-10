@@ -52,6 +52,7 @@ const espera=ms=>new Promise(r=>setTimeout(r,ms));
 function fallo(i,n){const s=document.createElement('span');s.className='sn';s.textContent=n;i.replaceWith(s)}
 function trozos(n){const p=Math.ceil(n/10),b=Math.floor(n/p),r=n%p,o=[];let k=0;for(let i=0;i<p;i++){const t=b+(i<r?1:0);o.push([k,k+t]);k+=t}return o} // reparte parejo: 11 -> 6+5, nunca 10+1
 function paginas(slots){
+  slots=slots.filter(s=>!((D.cfg.ocultas||{})[s])); // categorías ocultas desde los ajustes
   const piezas=[];
   for(const s of slots){const it=(D.sec[s]||[]);if(!it.length)continue;for(const [a,b] of trozos(it.length))piezas.push({slot:s,items:it.slice(a,b)})}
   const out=[];let esp=null; // piezas chicas (<=5): se juntan de dos en dos para que la página no se vea vacía
